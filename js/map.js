@@ -10,6 +10,9 @@ var sortN= Array();
 var min=1000;
 var minNam='sa';
 var myJsonString='';
+
+var main_marker = Array();
+
 function initialize() {
     // prepare Geocoder
     geocoder = new google.maps.Geocoder();
@@ -47,10 +50,10 @@ function initialize() {
       }
 
       // Clear out the old markers.         
-      markers.forEach(function(marker) {
+      main_marker.forEach(function(marker) {
         marker.setMap(null);
       });
-      markers = [];
+      main_marker = [];
 
 
       // For each place, get the icon, name and location.
@@ -66,26 +69,12 @@ function initialize() {
         }
 
         // Create a marker for each place.
-        markers.push(new google.maps.Marker({
+        main_marker.push(new google.maps.Marker({
           map: map,
           icon: "images/marker.png",
           title: place.name,
           position: place.geometry.location
         }));
-
-            // prepare info window
-       /* var infowindow = new google.maps.InfoWindow({
-            content: '<img src="' + obj.icon + '" /><font style="color:#000;">' + obj.name + 
-            '<br />Rating: ' + obj.rating + '<br />Vicinity: ' + obj.vicinity + '</font>'
-        });*/
-
-        // add event handler to current marker
-        /*google.maps.event.addListener(mark, 'click', function() {
-            clearInfos();
-            infowindow.open(map,mark);
-        });*/
-
-        //infos.push(infowindow);
 
         if (place.geometry.viewport) {              
            // Only geocodes have viewport.
