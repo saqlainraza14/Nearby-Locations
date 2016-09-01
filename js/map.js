@@ -17,7 +17,7 @@ function initialize() {
     // prepare Geocoder
     geocoder = new google.maps.Geocoder();
 
-    // set initial position (New York)
+    // set initial position (Puchong)
     var myLatlng = new google.maps.LatLng(2.998249, 101.622001);
 
     var myOptions = { // default map options
@@ -38,7 +38,6 @@ function initialize() {
     map.addListener('bounds_changed', function() {
       searchBox.setBounds(map.getBounds());
     });
-
     
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
@@ -274,8 +273,10 @@ function createMarker(obj) {
         position: obj.geometry.location,
         map: map,
         icon: icon_style,
+        animation: google.maps.Animation.DROP,
         title: obj.name
     });
+    
      // alert(obj.name);
    var lat=document.getElementById('lat').value;
    var long=document.getElementById('lng').value;
