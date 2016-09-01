@@ -189,7 +189,7 @@ function createMarkers(results, status) {
 
    //   console.log(datas+'datas');
       myJsonString = JSON.stringify(datas);
-      console.log(myJsonString);
+      //console.log("JSON Result : " + myJsonString);
       parse($.parseJSON(myJsonString));
       //console.log(sortS);
       TempA = sortS.slice();
@@ -197,6 +197,7 @@ function createMarkers(results, status) {
       sortS.sort();
       //console.log(sortS);
       //console.log(sortN);
+      
       var KeyValue = document.getElementById('data').value;
       
       
@@ -276,7 +277,7 @@ function createMarker(obj) {
         animation: google.maps.Animation.DROP,
         title: obj.name
     });
-    
+
      // alert(obj.name);
    var lat=document.getElementById('lat').value;
    var long=document.getElementById('lng').value;
@@ -304,10 +305,13 @@ function createMarker(obj) {
 //var loc2 = new GLatLng(obj.geometry.location.lat(), obj.geometry.location.lng());
 var dist = p2.distanceFrom(p1);
 //alert(dist/1000+'m');
-  var distn=dist/1000;
-  var dost=distn+(distn <1 ? "m" : "km")
+  var distn=dist/1000 +" km";
+  var dost=distn+(distn <1 ? "m" : "km");
  //$('#Display').append('<tr><td>'+obj.name+'</td><td>'+dost+'</td></tr>');
-  datas.push({ place:obj.name,Distance:distn});
+
+  var time = Math.round(distn/50*60);
+  time = time<=1 ? "1 min" : time +" mins";
+  datas.push({ place:obj.name,Distance:distn,Time:time});
  //alert(google.maps.geometry.spherical.computeDistanceBetween(p1, p2)+'sa');
 
   
