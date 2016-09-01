@@ -65,14 +65,6 @@ function initialize() {
           document.getElementById('lng').value = place.geometry.location.lng();
         }
 
-        var icon = {
-          url: place.icon,
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 34),
-          scaledSize: new google.maps.Size(25, 25)
-        };
-
         // Create a marker for each place.
         markers.push(new google.maps.Marker({
           map: map,
@@ -80,6 +72,20 @@ function initialize() {
           title: place.name,
           position: place.geometry.location
         }));
+
+            // prepare info window
+       /* var infowindow = new google.maps.InfoWindow({
+            content: '<img src="' + obj.icon + '" /><font style="color:#000;">' + obj.name + 
+            '<br />Rating: ' + obj.rating + '<br />Vicinity: ' + obj.vicinity + '</font>'
+        });*/
+
+        // add event handler to current marker
+        /*google.maps.event.addListener(mark, 'click', function() {
+            clearInfos();
+            infowindow.open(map,mark);
+        });*/
+
+        //infos.push(infowindow);
 
         if (place.geometry.viewport) {              
            // Only geocodes have viewport.
@@ -289,7 +295,7 @@ function createMarker(obj) {
   
   
   var p1 = new google.maps.LatLng(lat,long);
-var p2 = new google.maps.LatLng(obj.geometry.location.lat(),obj.geometry.location.lng());
+  var p2 = new google.maps.LatLng(obj.geometry.location.lat(),obj.geometry.location.lng());
   
   google.maps.LatLng.prototype.distanceFrom = function(latlng) {
   var lat = [this.lat(), latlng.lat()]
@@ -321,7 +327,7 @@ var dist = p2.distanceFrom(p1);
 
     // prepare info window
     var infowindow = new google.maps.InfoWindow({
-        content: '<img src="' + obj.icon + '" /><font style="color:#000;">' + obj.name + 
+        content: ' <img src="' + obj.icon + '" /><font style="color:#000;"> ' + obj.name + 
         '<br />Rating: ' + obj.rating + '<br />Vicinity: ' + obj.vicinity + '</font>'
     });
 
