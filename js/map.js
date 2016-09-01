@@ -76,7 +76,7 @@ function initialize() {
         // Create a marker for each place.
         markers.push(new google.maps.Marker({
           map: map,
-          icon: "js/marker.png",
+          icon: "images/marker.png",
           title: place.name,
           position: place.geometry.location
         }));
