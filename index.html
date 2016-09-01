@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Search near by Places</title>
+    </style>
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="http://cdn.dcodes.net/2/tabs/js/dc_tabs.js"></script>
+
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+      .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 100%;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+      #target {
+        width: 345px;
+      }
+      #bottom{
+          background-color: pink;
+          position: absolute;
+          top: 250px;
+          bottom: 0;
+          overflow: auto;
+      }
+    </style>
+    <!-- DC Tabs CSS -->
+    <link type="text/css" rel="stylesheet" href="css/tabs.css" />
+    <!-- jQuery Library (skip this step if already called on page ) -->
+    <script type="text/javascript" src="http://cdn.dcodes.net/2/jquery.min.js"></script> <!-- (do not call twice) -->
+    <!-- DC Tabs JS -->
+    <script type="text/javascript" src="http://cdn.dcodes.net/2/tabs/js/dc_tabs.js"></script>
+
+  </head>
+  <body>
+    <div id="gmap_canvas"></div>
+
+    <!-- DC Opera Tabs Start -->
+    <div id="tab" class="dc_tabs_type_4_container" style="width:30%; margin: 0 5% 10% 0;">
+      <ul id="dc_tabs_type_4">
+        <!-- Tab Captions -->
+        <li><a href="#" title="Train" id="train_station"><img src="images/train.png" /></a></li>
+        <li><a href="#" title="Cafe" id="cafe"><img src="images/cafe.png" /></a></li>
+        <li><a href="#" title="Restaurant" id="restaurant"><img src="images/restaurant.png" /></a></li>
+        <li><a href="#" title="ATM" id="atm"><img src="images/atm.png" /></a></li>
+        <li><a href="#" title="Bank" id="bank"><img src="images/bank.png" /></a></li>
+      </ul>
+      <div id="dc_tabs_type_4_content" style="height:auto;"> <!-- Tab Content Container -->         
+        <!-- Tab 1 Start -->
+        <div id="Train">
+          <table id="Display" class="table table-striped" >
+            <tr style="color:#4B0082;">
+              <th>Name Of Place</th>
+              <th id="city_header">Distance From Selected Place (in km)</th>
+            </tr>
+          </table> 
+        </div>
+        <!-- Tab 1 End -->
+         
+        <!-- Tab 2 Start -->
+        <div id="Cafe">
+          <table id="CafeData" class="table table-striped" >
+            <tr style="color:#4B0082;">
+              <th>Name Of Place</th>
+              <th id="city_header">Distance From Selected Place (in km)</th>
+            </tr>
+          </table>
+        </div>
+        <!-- Tab 2 End -->
+         
+        <!-- Tab 3 Start -->
+        <div id="Restaurant">
+          <table id="RestaurantData" class="table table-striped" >
+            <tr style="color:#4B0082;">
+              <th>Name Of Place</th>
+              <th id="city_header">Distance From Selected Place (in km)</th>
+            </tr>
+          </table>
+        </div>
+        <!-- Tab 3 End -->
+         
+        <!-- Tab 4 Start -->
+        <div id="ATM">
+          <table id="ATMData" class="table table-striped" >
+            <tr style="color:#4B0082;">
+              <th>Name Of Place</th>
+              <th id="city_header">Distance From Selected Place (in km)</th>
+            </tr>
+          </table>
+        </div>
+        <!-- Tab 4 End -->
+
+        <!-- Tab 5 Start -->
+        <div id="Bank">
+          <table id="BankData" class="table table-striped" >
+            <tr style="color:#4B0082;">
+              <th>Name Of Place</th>
+              <th id="city_header">Distance From Selected Place (in km)</th>
+            </tr>
+          </table>
+        </div>
+        <!-- Tab 5 End -->
+        <input id="pac-input" class="controls" type="text" placeholder="Search for a specific location" style="margin: 1%;">
+      </div> <!-- /dc_tabs_type_4_content --> 
+    </div>
+    <!-- DC Opera Tabs End -->
+    <div class="dc_clear"></div> <!-- line break/clear line -->
+    <!-- DC Opera Tabs Settings -->
+    <script type="text/javascript">
+    /* Tabs 4 */
+    $(document).ready(function() {
+        $("#dc_tabs_type_4_content div").hide(); // Initially hide all dc_tabs_type_4_content
+        $("#dc_tabs_type_4 li:first").attr("id","current"); // Activate first tab
+        $("#dc_tabs_type_4_content div:first").fadeIn(); // Show first tab dc_tabs_type_4_content
+
+        $("a").click(function(e) {
+           event.preventDefault();
+           var KeyValue = $(this).attr('id');
+           
+            if(KeyValue == "train_station")
+            {
+              findPlaces(KeyValue);
+              var val = $('#data').val(KeyValue);             
+            }
+            else if(KeyValue == "cafe")
+            {
+              findPlaces(KeyValue);
+              $('input[name="data"]').val(KeyValue); 
+            }
+            else if(KeyValue == "restaurant")
+            {
+              findPlaces(KeyValue);
+              $('input[name="data"]').val(KeyValue); 
+            }
+            else if(KeyValue == "atm")
+            {
+              findPlaces(KeyValue);
+              $('input[name="data"]').val(KeyValue); 
+            }
+            else
+            {
+              findPlaces(KeyValue);
+              $('input[name="data"]').val(KeyValue); 
+            }
+          });
+         
+        $('#dc_tabs_type_4 a').click(function(e) { 
+            e.preventDefault(); 
+            $("#dc_tabs_type_4_content div").hide(); //Hide all dc_tabs_type_4_content
+            $("#dc_tabs_type_4 li").attr("id",""); //Reset id's
+            $(this).parent().attr("id","current"); // Activate this
+            $('#' + $(this).attr('title')).fadeIn(); // Show dc_tabs_type_4_content for current tab
+        });
+    })();   
+    </script>
+
+    <input type="hidden" id="lat" name="lat" value="2.998249" />
+    <input type="hidden" id="lng" name="lng" value="101.622001" />
+    <input type="hidden" id="data" name="data" value="" />
+
+ 
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWuSo3sxBPKKN6SL206aj76Ex7EF1wk_4&libraries=places&callback=initialize" async defer></script>
+    <script src='https://www.google.com/jsapi'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script src="js/map.js"></script>
+  </body>
+  </html>
